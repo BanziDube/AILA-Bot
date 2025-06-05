@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Chat with AILA</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Orbitron', sans-serif;
+      background-color: #0d0d0d;
+      color: white;
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* Sidebar styles */
+    .sidebar {
+      width: 250px;
+      background: #1a1a1a;
+      border-right: 2px solid #00ffe0;
+      padding: 20px;
+      box-shadow: 2px 0 10px #00ffe055;
+      transition: transform 0.3s ease;
+    }
+
+    .sidebar.hidden {
+      transform: translateX(-100%);
+    }
+
+    .sidebar h2 {
+      color: #00ffe0;
+      font-size: 24px;
+      margin-top: 0;
+    }
+
+    .sidebar a {
+      display: block;
+      margin: 15px 0;
+      padding: 12px;
+      background: #121212;
+      border-left: 4px solid #00ffe0;
+      border-radius: 8px;
+      color: #fff;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+
+    .sidebar a:hover {
+      background: #00ffe0;
+      color: #0d0d0d;
+      font-weight: bold;
+    }
+
+    .close-btn {
+      font-size: 24px;
+      color: #00ffe0;
+      cursor: pointer;
+      text-align: right;
+      margin-bottom: 20px;
+    }
+
+    /* Main content area */
+    .main-content {
+      flex: 1;
+      position: relative;
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    /* Toggle (hamburger) button */
+    .toggle-btn {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      font-size: 24px;
+      color: #00ffe0;
+      background: none;
+      border: none;
+      cursor: pointer;
+      display: none;
+    }
+
+    /* Chatbot frame */
+    .bp-webchat {
+      width: 100%;
+      height: 600px;
+      max-height: 80vh;
+      border: 2px solid #00ffe0;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 0 20px #00ffe066;
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        position: absolute;
+        z-index: 10;
+        height: 100vh;
+      }
+
+      .toggle-btn {
+        display: block;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <div class="sidebar" id="sidebar">
+    <div class="close-btn" onclick="toggleSidebar()">×</div>
+    <h2>AILA</h2>
+    <a href="#" onclick="startQuiz()">Test My Knowledge</a>
+    <a href="#" onclick="aboutAILA()">About</a>
+  </div>
+
+  <!-- Main content -->
+  <div class="main-content">
+    <button class="toggle-btn" onclick="toggleSidebar()">☰</button>
+    <h1>Welcome to AILA – Your AI Learning Assistant</h1>
+    <p>Select an option or interact with AILA below:</p>
+    
+    <!-- Botpress Webchat -->
+    <div class="bp-webchat" id="webchat-container"></div>
+  </div>
+
+  <!-- Botpress Scripts -->
+  <script src="https://cdn.botpress.cloud/webchat/v3.0/inject.js"></script>
+  <script>
+    // Load Botpress WebChat inside container
+    window.botpressWebChat.init({
+      composerPlaceholder: "Type your message...",
+      botId: "YOUR_BOT_ID", // Replace with your bot ID
+      hostUrl: "https://cdn.botpress.cloud/webchat/v3",
+      messagingUrl: "https://messaging.botpress.cloud",
+      container: document.getElementById('webchat-container'),
+      showCloseButton: false,
+      showBotInfoPage: false,
+      enableTranscriptDownload: false,
+      theme: "dark",
+      themeColor: "#00ffe0"
+    });
+
+    function startQuiz() {
+      window.botpressWebChat.sendEvent({ type: 'proactive-trigger', channel: 'web', payload: { text: 'Start quiz' } });
+    }
+
+    function aboutAILA() {
+      window.botpressWebChat.sendEvent({ type: 'proactive-trigger', channel: 'web', payload: { text: 'Tell me about AILA' } });
+    }
+
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('hidden');
+    }
+  </script>
+</body>
+</html>
